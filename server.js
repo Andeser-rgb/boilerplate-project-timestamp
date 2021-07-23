@@ -27,6 +27,7 @@ app.get("/api/:time", function (req, res) {
   if(isUnix || isDate) let date = new Date(req.params.time);
   if(isUnix) req.send({unix: req.params.time, utc: date});
   if(idDate)req.send({unix: (date.getTime() / 1000).toFixed(0), utc: date})
+  if(!isUnix && !isDate) req.send(error: "Invalid date");
 });
 
 
