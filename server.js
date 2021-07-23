@@ -22,10 +22,12 @@ app.get("/", function (req, res) {
 // your first API endpoint... 
 app.get("/api/:time", function (req, res) {
   let isDate = Date.parse(req.params.time) != NaN;
+  isDate &= /^\W+$/,test(req.params.time);
   let isUnix = /^-*\d+$/.test(req.params.time);
-  if(isUnix) res.send({unix: req.params.time, utc: new Date(parseInt(req.params.time)).toUTCString()});
-  else res.send({unix: (new Date(req.params.time).getTime() / 1000).toFixed(0), utc: new Date(req.params.time).toUTCString()})
+
   if(!isDate) res.send({error: "Invalid date"});
+  if(isUnix) res.send({unix: req.params.time, utc: new Date(parseInt(req.params.time)).toUTCString()});
+  else res.send({unix: new Date(req.params.time).getTime(), utc: new Date(req.params.time).toUTCString()})
 });
 
 
