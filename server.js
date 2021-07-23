@@ -4,6 +4,7 @@
 // init project
 var express = require('express');
 var app = express();
+var moment = require("moment");
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -20,8 +21,12 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api/:time", function (req, res) {
+  let isDate = moment(req.params.time, "YYYY/MM/DD", true).isValid();
+  let isUnix = /^-*\d+/.test(req.params.time);
+  if(isUnix || isDate) let date = new Date(req.params.time);
+  if(isUnix) req.send({unix: req.params.time, utc: date});
+  if(idDate)req.send({unix: (date.getTime() / 1000).toFixed(0), utc: date})
 });
 
 
