@@ -20,7 +20,7 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/:time", (req, res) => {
+app.get("/api/:time?", (req, res) => {
   let time = req.params.time;
   if(/^-*[1-9]\d+$/.test(time)) time = parseInt(time);
   let date = new Date(time);
