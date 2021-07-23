@@ -21,13 +21,9 @@ app.get("/", function (req, res) {
 
 // your first API endpoint... 
 app.get("/api/:time", function (req, res) {
-  let isDate = Date.parse(req.params.time) != NaN;
-  isDate &= /^\W+$/,test(req.params.time);
-  let isUnix = /^-*\d+$/.test(req.params.time);
-
-  if(!isDate) res.send({error: "Invalid date"});
-  if(isUnix) res.send({unix: req.params.time, utc: new Date(parseInt(req.params.time)).toUTCString()});
-  else res.send({unix: new Date(req.params.time).getTime(), utc: new Date(req.params.time).toUTCString()})
+  let date = new Date(req.params.time);
+  if(date === "Invalid Date") res.send({error: "Invalid Date"});
+  res.send({unix: date.getTime(), utc: date.toUTCString()})
 });
 
 
