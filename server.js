@@ -23,7 +23,8 @@ app.get("/", function (req, res) {
 app.get("/api/:time", (req, res) => {
   let time = req.params.time;
   if(/^-*[1-9]\d+$/.test(time)) time = parseInt(time);
-  let date = new Date(req.params.time);
+  let date = new Date(time);
+  if(time === undefined) date = new Date();
   if(date.toString() === "Invalid Date") res.send({error: "Invalid Date"});
   else res.send({unix: date.getTime(), utc: date.toUTCString()})
 });
