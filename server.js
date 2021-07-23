@@ -21,12 +21,10 @@ app.get("/", function (req, res) {
 
 // your first API endpoint... 
 app.get("/api/:time", function (req, res) {
-  let isDate = /(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])?|(?:(?:16|[2468][048]|[3579][26])00)?)))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))(\4)?(?:(?:1[6-9]|[2-9]\d)?\d{2})?$/.test(res.params.time);
+  let isDate = /(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])?|(?:(?:16|[2468][048]|[3579][26])00)?)))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))(\4)?(?:(?:1[6-9]|[2-9]\d)?\d{2})?$/.test(req.params.time);
   let isUnix = /^-*\d+/.test(req.params.time);
-  let date = ""
-  if(isUnix || isDate) date = new Date(req.params.time);
-  if(isUnix) res.send({unix: req.params.time, utc: date});
-  if(isDate)res.send({unix: (date.getTime() / 1000).toFixed(0), utc: date})
+  if(isUnix) res.send({unix: req.params.time, utc: new Date(parseInt(req.params.time) * 1000)});
+  if(isDate)res.send({unix: (new Date(req.params.time).getTime() / 1000).toFixed(0), utc: new Date(req.params.time)})
   if(!isUnix && !isDate) res.send({error: "Invalid date"});
 });
 
